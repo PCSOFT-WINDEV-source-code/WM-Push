@@ -1,0 +1,85 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : COL_Push
+ major_version : 28
+ minor_version : 0
+ type : 7
+ description : ""
+ subtype : 0
+procedure_set :
+ identifier : 0x11af2c39000fa0d5
+ internal_properties : CAAAAAgAAABGLu41kG7fjQV3iS4F72qmnKaNh5694reolNKIW0iw
+ code_elements :
+  internal_properties : CAAAAAgAAACyspuk3RxK9hv423y2EciR7QAO3yhSFD9i8SafFZpTCEs+gfQ+zGqGxVcjEoP3xhNxR0rrSIlTgI6mU21xTmgwggL0AdS+GQ==
+  type_code : 31
+  p_codes : []
+  procedures :
+   -
+     name : ActivatePushNotif
+     internal_properties : CAAAAAgAAABWoVJhsCxYmRaG603Ketue25DcXFr/Ad4cxtglbfhq10IPQeS5HrR9fDTW0PYi5UrgEIxl/pLZc0yIqc60sDT5I5w6ekQWk6rakv465F125XZbsV0VXguoZAl09ivUbg+bWnnbLKFtFmjTzu20SEGgPRuXWnAl4IdwLex+/SHPBk6AompHpu3IvOnrcbTUFa1LlXtyrSY=
+     procedure_id : 1274285855779892953
+     type_code : 15
+     code : |1+
+      
+      // Summary: Callback called after registration beside the service of iOS notifications
+      // Syntax:
+      //ActivatePushNotif (<bufIdentifier> is buffer, <sError> is string)
+      //
+      // Parameters:
+      //	bufIdentifier (buffer): Identifier to store on the server
+      //	sError (UNICODE string): Error message if the activation failed
+      
+      procedure ActivatePushNotif(bufIdentifier is buffer, sError is string)
+      
+      if Length(bufIdentifier) > 0 then
+      	// Informs the application server about the new identifier
+      	<compile if Configuration="Android application">		
+      		WD_Push_server.AddAndroidIdentifier(bufIdentifier,SysAndroidVersion())		
+      	<end>
+      	<compile if Configuration="iOS application">		
+      		WD_Push_server.AddIOSIdentifier(bufIdentifier,False,SysIOSVersion())
+      	<end>
+      	
+      	if ErrorOccurred() then
+      		// Error
+      		Error("Failure calling the Web service",ErrorInfo())
+      	end
+      else
+      	// Returns the error returned by the service
+      	Error("Backup error: ", sError)
+      end
+      
+      
+     type : 458752
+   -
+     name : ReceivePushNotif
+     procedure_id : 1274285860074925910
+     type_code : 15
+     code : |1-
+      
+      // Summary: Callback called when receiving a PUSH notification
+      // Syntax:
+      //ReceivePushNotif (<myNotif> is Notification)
+      //
+      // Parameters:
+      //	myNotif (Notification): Notification that was received
+      
+      procedure ReceivePushNotif(myNotif is Notification) 
+      
+      Info(StringBuild("Notification received with ""%1"" as message and ""%2"" as content" , myNotif.Message,myNotif.Content))
+      
+      // ex: If the content is the identifier of a product, you can display the corresponding product:
+      // OpenMobileWindow(WIN_Product,myNotif..Content)
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : COL_SansNom1
+resources :
+ string_res :
+  identifier : 0x1fad605800049491
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ
